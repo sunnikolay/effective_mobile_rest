@@ -1,0 +1,18 @@
+logback:
+  path: @project.basedir@/logs
+
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: production
+  application:
+    name: 'ms-report-rest'
+  config:
+    import: 'optional:configserver:http://ab-cloud-config.uc.komus.net'
+  cloud:
+    config:
+      username: ${CLOUD_USER}
+      password: ${CLOUD_PASSWORD}
+      uri: 'http://ab-cloud-config.uc.komus.net'
