@@ -9,10 +9,17 @@ spring:
     active: production
   application:
     name: 'ms-report-rest'
-  config:
-    import: 'optional:configserver:http://ab-cloud-config.uc.komus.net'
-  cloud:
-    config:
-      username: ${CLOUD_USER}
-      password: ${CLOUD_PASSWORD}
-      uri: 'http://ab-cloud-config.uc.komus.net'
+  jpa:
+    open-in-view: false
+  datasource:
+    jdbc-url: 'jdbc:sqlite:db/app.db'
+    driver-class-name: 'org.sqlite.JDBC'
+    pool-name: 'CP: APP'
+    hibernate:
+      dialect: 'org.sqlite.hibernate.dialect.SQLiteDialect'
+      show-sql: true
+      hbm2ddl:
+        auto: 'validate'
+  flyway:
+    enabled: true
+    locations: 'classpath:db/migration'
