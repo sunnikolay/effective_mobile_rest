@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <springProperty scope="context" name="logPath" source="logback.path"/>
+    <springProperty scope="context" name="logPath" source="server.logging.file-path"/>
     <springProperty scope="context" name="consoleLevel" source="server.logging.level.console"/>
     <springProperty scope="context" name="appLevel" source="server.logging.level.app"/>
     <springProperty scope="context" name="springLevel" source="server.logging.level.spring"/>
     <springProperty scope="context" name="hibernateLevel" source="server.logging.level.hibernate"/>
     <springProperty scope="context" name="hikariLevel" source="server.logging.level.hikari"/>
-    <springProperty scope="context" name="appFileAppender_maxFileSize" source="server.logging.file-appender.app.max-file-size"/>
-    <springProperty scope="context" name="appFileAppender_maxHistory" source="server.logging.file-appender.app.max-history"/>
-    <springProperty scope="context" name="appFileAppender_totalSizeCap" source="server.logging.file-appender.app.total-size-cap"/>
-    <springProperty scope="context" name="requestsFileAppender_maxFileSize" source="server.logging.file-appender.requests.max-file-size"/>
-    <springProperty scope="context" name="requestsFileAppender_maxHistory" source="server.logging.file-appender.requests.max-history"/>
-    <springProperty scope="context" name="requestsFileAppender_totalSizeCap" source="server.logging.file-appender.requests.total-size-cap"/>
-    <property name="LOGS" value="${logPath}" />
+    <springProperty scope="context" name="maxFileSize" source="server.logging.file-appender.max-file-size"/>
+    <springProperty scope="context" name="maxHistory" source="server.logging.file-appender.max-history"/>
+    <springProperty scope="context" name="totalSizeCap" source="server.logging.file-appender.total-size-cap"/>
 
     <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -21,21 +17,21 @@
     </appender>
 
     <appender name="AppFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS}/app.log</file>
+        <file>${logPath}/app.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%highlight(%-5level)] [%green(%thread)] [%yellow(%logger{36})]: %msg%n%throwable</Pattern>
         </encoder>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${LOGS}/archived/app-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <maxFileSize>${appFileAppender_maxFileSize}</maxFileSize>
-            <maxHistory>${appFileAppender_maxHistory}</maxHistory>
-            <totalSizeCap>${appFileAppender_totalSizeCap}</totalSizeCap>
+            <fileNamePattern>${logPath}/archived/app-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <maxHistory>${maxHistory}</maxHistory>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
         </rollingPolicy>
     </appender>
 
     <appender name="SevereFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS}/severe.log</file>
+        <file>${logPath}/severe.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>WARN</level>
         </filter>
@@ -44,7 +40,7 @@
         </encoder>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOGS}/archived/severe-%d{yyyy-MM-dd}.%i.log
+            <fileNamePattern>${logPath}/archived/severe-%d{yyyy-MM-dd}.%i.log
             </fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>10MB</maxFileSize>
@@ -53,16 +49,16 @@
     </appender>
 
     <appender name="HTTPRequests" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS}/http.log</file>
+        <file>${logPath}/http.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
         </encoder>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${LOGS}/archived/requests-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <maxFileSize>${requestsFileAppender_maxFileSize}</maxFileSize>
-            <maxHistory>${requestsFileAppender_maxHistory}</maxHistory>
-            <totalSizeCap>${requestsFileAppender_totalSizeCap}</totalSizeCap>
+            <fileNamePattern>${logPath}/archived/requests-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <maxHistory>${maxHistory}</maxHistory>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
         </rollingPolicy>
     </appender>
 
@@ -70,7 +66,7 @@
         <appender-ref ref="Console" />
     </root>
 
-    <logger name="net.komus.reportrest" level="${appLevel}" additivity="false">
+    <logger name="com.nstiazhkin.smapi" level="${appLevel}" additivity="false">
         <appender-ref ref="Console" />
         <appender-ref ref="AppFileAppender" />
         <appender-ref ref="SevereFileAppender" />

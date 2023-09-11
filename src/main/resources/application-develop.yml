@@ -1,0 +1,41 @@
+server:
+  port: 8080
+  error:
+    include-stacktrace: never
+  logging:
+    file-path: @project.basedir@/logs
+    file-appender:
+      max-file-size: '5MB'
+      max-history: 7
+      total-size-cap: '15MB'
+    level:
+      console: debug
+      app: debug
+      spring: debug
+      hibernate: debug
+      hikari: debug
+  upload:
+    prefix-length: 18
+    path: upload
+
+spring:
+  jpa:
+    open-in-view: true
+  datasource:
+    jdbc-url: 'jdbc:mysql://localhost:3306/em_sm_api?useSSL=false'
+    username: 'root'
+    password: '123123'
+    driver-class-name: 'org.mariadb.jdbc.Driver'
+    hibernate:
+      dialect: org.hibernate.dialect.MariaDBDialect
+      show-sql: false
+      hbm2ddl:
+        auto: validate
+  flyway:
+    enabled: true
+    locations: 'classpath:db/migration'
+
+jwt-settings:
+  secret: 'YJN4kZJZAQtSyvl8AG0GflAezgVuQbsNdRQQujVkD5NE5X4fkdZf'
+  cookie: 'jwt-key'
+  exp-ms: 1800000
